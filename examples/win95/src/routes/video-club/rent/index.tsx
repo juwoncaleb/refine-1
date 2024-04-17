@@ -5,154 +5,19 @@ import styled from "styled-components";
 import { IconChevronRight } from "../../../components/icons/chevron-right";
 import { IconChevronLeft } from "../../../components/icons/chevron-left";
 import { VideoClubLayoutSubPage } from "../subpage-layout";
-import { VideoClubPageTapeRentMemberList } from "./member-list";
-import { VideoClubPageTapeRentTitleList } from "./title-list";
-import { VideoClubPageTapeRentConfirm } from "./confirm";
+import { VideoClubPageTapeRentMemberList } from "./select-member";
+import { VideoClubPageTapeRentTitleList } from "./select-title";
+import { VideoClubPageTapeRentConfirm } from "./create";
 import { IExendedMember, IExtendedVideoTitle } from "../../../interfaces";
 import { ArrowGreenPixelatedIcon } from "../../../components/icons/arrow-green-pixelated";
 
 type Screen = "members" | "titles" | "confirm";
 
-export const VideoClubPageTapeRent = () => {
-  const navigate = useNavigate();
-
-  const [selectedMember, setSelectedMember] = useState<IExendedMember | null>(
-    null,
-  );
+export const VideoClubPageTapeRentCreateIndex = () => {
   const [selectedTitle, setSelectedTitle] =
     useState<IExtendedVideoTitle | null>(null);
-  const [screen, setScreen] = useState<Screen>("members");
 
-  const handleBackClick = () => {
-    switch (screen) {
-      case "members":
-        return;
-      case "titles":
-        setScreen("members");
-        return;
-      case "confirm":
-        setScreen("titles");
-        return;
-    }
-  };
-
-  const handleNextClick = () => {
-    if (!selectedMember) return;
-
-    switch (screen) {
-      case "members":
-        setScreen("titles");
-        return;
-      case "titles":
-        setScreen("confirm");
-        return;
-      case "confirm":
-        return;
-    }
-  };
-
-  const screenConfig = useMemo(() => {
-    switch (screen) {
-      case "members":
-        return {
-          title: "Select Member",
-          help: "You can browse all the members in the Refine Video Club.",
-          screenImage:
-            "https://refine.ams3.cdn.digitaloceanspaces.com/win95/members.jpg",
-          component: VideoClubPageTapeRentMemberList,
-          nextButtonIcon: <IconChevronRight />,
-          nextButtonText: "Next",
-          isNextDisabled: !selectedMember,
-          isBackDisabled: true,
-        };
-      case "titles":
-        return {
-          title: "Select Title",
-          help: "You can browse all the titles in the Refine Video Club.",
-          screenImage:
-            "https://refine.ams3.cdn.digitaloceanspaces.com/win95/tape.jpg",
-          component: VideoClubPageTapeRentTitleList,
-          isNextDisabled: !selectedTitle,
-          nextButtonIcon: <IconChevronRight />,
-          nextButtonText: "Next",
-          isBackDisabled: false,
-        };
-      case "confirm":
-        return {
-          title: "Rent tape",
-          help: "Please confirm the rental.",
-          screenImage: null,
-          component: VideoClubPageTapeRentConfirm,
-          nextButtonIcon: <ArrowGreenPixelatedIcon />,
-          nextButtonText: "Confirm",
-          isNextDisabled: false,
-          isBackDisabled: false,
-        };
-    }
-  }, [screen, selectedMember, selectedTitle]);
-
-  return (
-    <VideoClubLayoutSubPage
-      title={screenConfig.title}
-      help={screenConfig.help}
-      onClose={() => navigate("/video-club")}
-    >
-      <Container>
-        {screenConfig.screenImage && (
-          <ScreenImage src={screenConfig.screenImage} alt="members" />
-        )}
-
-        {screen === "members" && (
-          <VideoClubPageTapeRentMemberList
-            selectedMember={selectedMember}
-            onMemberSelect={(member) => setSelectedMember(member)}
-          />
-        )}
-        {screen === "titles" && (
-          <VideoClubPageTapeRentTitleList
-            selectedTitle={selectedTitle}
-            onTitleSelect={(title) => setSelectedTitle(title)}
-          />
-        )}
-        {screen === "confirm" && (
-          <VideoClubPageTapeRentConfirm
-            member={selectedMember}
-            title={selectedTitle}
-          />
-        )}
-      </Container>
-
-      <Separator />
-      <ActionContainer>
-        <ActionButton
-          disabled={screenConfig.isBackDisabled}
-          onClick={handleBackClick}
-        >
-          <IconChevronLeft />
-          <span>Back</span>
-        </ActionButton>
-        <ActionButton
-          disabled={screenConfig.isNextDisabled}
-          onClick={handleNextClick}
-          type={screen === "confirm" ? "submit" : "button"}
-          form={screen === "confirm" ? "rent-tape-form" : undefined}
-          style={{
-            flexDirection: screen === "confirm" ? "row-reverse" : "row",
-          }}
-        >
-          <span>{screenConfig.nextButtonText}</span>
-          {screenConfig.nextButtonIcon}
-        </ActionButton>
-        <ActionButton
-          style={{
-            marginLeft: "12px",
-          }}
-        >
-          Cancel
-        </ActionButton>
-      </ActionContainer>
-    </VideoClubLayoutSubPage>
-  );
+  return null;
 };
 
 const Container = styled.div`
@@ -181,3 +46,70 @@ const ActionButton = styled(Button)`
   justify-content: center;
   gap: 6px;
 `;
+
+// const screenConfig = useMemo(() => {
+//   switch (screen) {
+//     case "members":
+//       return {
+//         title: "Select Member",
+//         help: "You can browse all the members in the Refine Video Club.",
+//         screenImage:
+//           "https://refine.ams3.cdn.digitaloceanspaces.com/win95/members.jpg",
+//         component: VideoClubPageTapeRentMemberList,
+//         nextButtonProps: {
+//           disabled: !selectedMember,
+//           text: "Next",
+//           type: "button",
+//           form: "",
+//           style: {
+//             flexDirection: "row",
+//           },
+//           icon: <IconChevronRight />,
+//         },
+//         backButtonProps: {
+//           disabled: true,
+//         },
+//       } as const;
+//     case "titles":
+//       return {
+//         title: "Select Title",
+//         help: "You can browse all the titles in the Refine Video Club.",
+//         screenImage:
+//           "https://refine.ams3.cdn.digitaloceanspaces.com/win95/tape.jpg",
+//         component: VideoClubPageTapeRentTitleList,
+//         nextButtonProps: {
+//           disabled: !selectedTitle,
+//           text: "Next",
+//           type: "button",
+//           form: "",
+//           style: {
+//             flexDirection: "row",
+//           },
+//           icon: <IconChevronRight />,
+//         },
+//         backButtonProps: {
+//           disabled: false,
+//         },
+//       } as const;
+//     case "confirm":
+//       return {
+//         title: "Rent tape",
+//         help: "Please confirm the rental.",
+//         screenImage: null,
+//         component: VideoClubPageTapeRentConfirm,
+//         nextButtonProps: {
+//           disabled: false,
+//           text: "Confirm",
+//           type: "submit",
+//           form: "rent-tape-form",
+//           style: {
+//             flexDirection: "row-reverse",
+//           },
+//           icon: <ArrowGreenPixelatedIcon />,
+//         },
+//         backButtonProps: {
+//           disabled: false,
+//         },
+//       } as const;
+//   }
+// }, [screen, selectedMember, selectedTitle]);

@@ -12,14 +12,14 @@ import {
   TableHeadCell,
   TableRow,
 } from "../../../components/table";
+import { DangerIcon } from "../../../components/icons/danger-icon";
+import { ImagePixelated } from "../../../components/image-pixelated";
 import {
   IExendedMember,
   IExtendedVideoTitle,
   ITape,
   IVideoTitle,
 } from "../../../interfaces";
-import { DangerIcon } from "../../../components/icons/danger-icon";
-import { ImagePixelated } from "../../../components/image-pixelated";
 
 type Props = {
   member: IExendedMember | null;
@@ -316,7 +316,7 @@ const StyledGroupBox = styled(GroupBox)`
   gap: 32px;
 `;
 
-const ImageMember = styled(ImagePixelated)`
+const ImageMember = styled.img`
   width: 200px;
   height: 200px;
   aspect-ratio: 200 / 200;

@@ -13,8 +13,8 @@ import {
   Navigate,
 } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-import { supabaseClient } from "./supabase-client";
 import { CommonLayout } from "./components/layout";
+import { supabaseClient } from "./supabase-client";
 import { AboutWindow } from "./components/about-window";
 import { HomePage } from "./components/home-page";
 import { LoginPage } from "./components/login-page";
@@ -25,7 +25,8 @@ import { VideoClubLayout } from "./routes/video-club/layout";
 import { VideoClubPageBrowseTitles } from "./routes/video-club/titles/list";
 import { VideoClubPageTitleDetails } from "./routes/video-club/titles/detail";
 import { VideoClubPageAddTitle } from "./routes/video-club/titles/add";
-import { VideoClubPageTapeRent } from "./routes/video-club/rent";
+import { VideoClubPageTapeRentCreate } from "./routes/video-club/rent/create";
+import { VideoClubPageTapeRentSelectMember } from "./routes/video-club/rent/select-member";
 
 const App = () => {
   return (
@@ -45,8 +46,16 @@ const App = () => {
               create: "/video-club/titles/new",
             },
             {
-              name: "members",
-              list: "/video-club/tape/rent",
+              name: "rentals",
+              list: "/video-club/tapes/rent",
+              create: "/video-club/tapes/rent/:memberId",
+              identifier: "rentals-rent",
+            },
+            {
+              name: "rentals",
+              list: "/video-club/tapes/return",
+              edit: "/video-club/tapes/return/:memberId",
+              identifier: "rentals-return",
             },
           ]}
           options={{
@@ -91,8 +100,17 @@ const App = () => {
                   <Route path=":id" element={<VideoClubPageTitleDetails />} />
                 </Route>
                 <Route path="titles/new" element={<VideoClubPageAddTitle />} />
-                <Route path="tape" element={<Outlet />}>
-                  <Route path="rent" element={<VideoClubPageTapeRent />} />
+                <Route path="tapes" element={<Outlet />}>
+                  <Route path="rent" element={<Outlet />}>
+                    <Route
+                      index
+                      element={<VideoClubPageTapeRentSelectMember />}
+                    />
+                    <Route
+                      path=":memberId"
+                      element={<VideoClubPageTapeRentCreate />}
+                    />
+                  </Route>
                 </Route>
               </Route>
             </Route>

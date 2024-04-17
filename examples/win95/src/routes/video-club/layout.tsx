@@ -179,7 +179,7 @@ const links = [
   {
     icon: "https://refine.ams3.cdn.digitaloceanspaces.com/win95/rent-tape.png",
     label: "Rent Tape",
-    href: "tape/rent",
+    href: "tapes/rent",
   },
   {
     icon: "https://refine.ams3.cdn.digitaloceanspaces.com/win95/return-tape.png",
